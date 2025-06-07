@@ -4,6 +4,7 @@ import os
 from datetime import datetime  
 import json
 from pathlib import Path
+import time
   
 
 headers = {  
@@ -20,6 +21,7 @@ def get_vacancies_json(vacancie_name: str, regions: list[int], industry_id: list
     url = "https://api.hh.ru/vacancies" 
     vacancies_json = []
     for i in range(0, 50):
+        time.sleep(1)
         params = {  
             "text": vacancie_name,  
             "area": regions, 
@@ -32,7 +34,7 @@ def get_vacancies_json(vacancie_name: str, regions: list[int], industry_id: list
             json_file = response.json().get("items", [])
             vacancies_json.extend(json_file)
         else:  
-            print(f"Request failed with status code: {response.status_code}")  
+            print(f"Request @{vacancie_name} failed with status code: {response.status_code}. Response text: {response.text}")   
     return vacancies_json
         
 def save_regions_as_json() -> None:
