@@ -20,7 +20,7 @@ def write_json(json_file: dict, file_name:str) -> None:
 def get_vacancies_json(vacancie_name: str, regions: list[int], industry_id: list[int] = None) -> list[dict]:
     url = "https://api.hh.ru/vacancies" 
     vacancies_json = []
-    for i in range(0, 50):
+    for i in range(0, 20):
         time.sleep(1)
         params = {  
             "text": vacancie_name,  
