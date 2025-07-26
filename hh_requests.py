@@ -15,7 +15,7 @@ def write_json(json_file: dict, file_name:str) -> None:
     '''
     Writes a dictionary to a JSON file within the '.files' directory.
 
-    Args:
+    Args
     - json_file: The dictionary data to write to the file.
     - file_name: The name of the file (without extension) to create/save.
 
@@ -34,7 +34,7 @@ def get_vacancies_json(
     '''
     Fetches vacancy data from the HeadHunter API based on search criteria.
 
-    Args:
+    Args
     - vacancie_name: The job title or keyword to search for.
     - regions: A list of region IDs where the vacancies are located.
     - industry_id: An optional list of industry IDs to filter the vacancies.
@@ -64,7 +64,7 @@ def save_regions_as_json() -> None:
     '''
     Fetches all geographical areas from the HeadHunter API and saves them to '.files/areas.json'.
 
-    Args: None
+    Args None
 
     return: None
     '''
@@ -77,7 +77,7 @@ def save_industries_as_json() -> None:
     '''
     Fetches all industry sectors from the HeadHunter API and saves them to '.files/industries.json'.
 
-    Args: None
+    Args None
 
     return: None
     '''
@@ -95,7 +95,7 @@ def save_vacancies_as_json(
     '''
     Fetches vacancies based on the provided criteria and saves them to a JSON file named after the vacancy and the current date.
 
-    Args:
+    Args
     - vacancie_name: The job title or keyword to search for.
     - regions: A list of region IDs where the vacancies are located.
     - industry_id: An optional list of industry IDs to filter the vacancies.
@@ -116,7 +116,7 @@ def get_vacancies_list(
     '''
     Fetches vacancies and extracts specific details into a list of lists.
 
-    Args:
+    Args
     - vacancy_name: The job title or keyword to search for.
     - regions: An optional list of region IDs where the vacancies are located.
     - industry_id: An optional list of industry IDs to filter the vacancies.
@@ -161,7 +161,7 @@ def get_vacancies_list_from_dict(
     '''
     Aggregates vacancy data for multiple job titles/keywords provided in a dictionary
 
-    Args:
+    Args
     - vacancy_name_dict: A dictionary mapping job titles/keywords to lists of industry IDs.
     - regions: An optional list of region IDs to apply to all searches.
 
@@ -177,7 +177,7 @@ def save_xlsx(data: list[list], name: str) -> None:
     '''
     Saves data to an Excel (.xlsx) file within the '.files' directory.
 
-    Args:
+    Args
     - data: The list of lists containing the data to write to the Excel file.
     - name: The base name for the Excel file (the date will be appended).
     - columns: A list of dictionaries defining the column headers for the Excel table.
@@ -203,7 +203,7 @@ def get_column_letter(column_number:int) -> str:
     '''
     Converts a column number (1-based) to its corresponding Excel column letter(s).
 
-    Args:
+    Args
     - column_number: The integer representing the column index (starting from 1).
 
     return: The Excel column letter string (e.g., 'A', 'Z', 'AA').
