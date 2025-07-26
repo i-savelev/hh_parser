@@ -17,4 +17,4 @@ vacancies_dict = {
     'Главный инженер проекта':[13],
     'курьер': None}
 data = hh.get_vacancies_list_from_dict(vacancies_dict, [1, 2])
-hh.save_xlsx(data, 'Вакансии', hh.columns)
+hh.save_xlsx(data, 'Вакансии')

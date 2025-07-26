@@ -173,7 +173,7 @@ def get_vacancies_list_from_dict(
         output_data.extend(vacancies_list)
     return output_data
 
-def save_xlsx(data: list[list], name: str, columns:list[dict]) -> None:
+def save_xlsx(data: list[list], name: str) -> None:
     '''
     Saves data to an Excel (.xlsx) file within the '.files' directory.
 
