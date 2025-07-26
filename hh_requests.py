@@ -12,12 +12,35 @@ headers = {
     } 
 
 def write_json(json_file: dict, file_name:str) -> None:
+    '''
+    Writes a dictionary to a JSON file within the '.files' directory.
+
+    Args:
+    - json_file: The dictionary data to write to the file.
+    - file_name: The name of the file (without extension) to create/save.
+
+    return: None
+    '''
     folder_path = '.files'
     Path(folder_path).mkdir(parents=True, exist_ok=True)
     with open(f'.files/{file_name}.json', 'w', encoding='utf-8') as file:
         json.dump(json_file, file, ensure_ascii=False, indent=4)
 
-def get_vacancies_json(vacancie_name: str, regions: list[int], industry_id: list[int] = None) -> list[dict]:
+def get_vacancies_json(
+        vacancie_name: str, 
+        regions: list[int], 
+        industry_id: list[int] = None
+        ) -> list[dict]:
+    '''
+    Fetches vacancy data from the HeadHunter API based on search criteria.
+
+    Args:
+    - vacancie_name: The job title or keyword to search for.
+    - regions: A list of region IDs where the vacancies are located.
+    - industry_id: An optional list of industry IDs to filter the vacancies.
+
+    return: A list of dictionaries, each representing a vacancy item from the API response.
+    '''
     url = "https://api.hh.ru/vacancies" 
     vacancies_json = []
     for i in range(0, 20):
@@ -38,48 +61,77 @@ def get_vacancies_json(vacancie_name: str, regions: list[int], industry_id: list
     return vacancies_json
         
 def save_regions_as_json() -> None:
-    """
-    save all areas in .files/areas.json
-    """
+    '''
+    Fetches all geographical areas from the HeadHunter API and saves them to '.files/areas.json'.
+
+    Args: None
+
+    return: None
+    '''
     url = "https://api.hh.ru/areas" 
     response = requests.get(url, headers=headers) 
     areas = response.json()
     write_json(areas, 'areas')
 
 def save_industries_as_json() -> None:
-    """
-    save all industries in .files/areas.json
-    """
+    '''
+    Fetches all industry sectors from the HeadHunter API and saves them to '.files/industries.json'.
+
+    Args: None
+
+    return: None
+    '''
     url = "https://api.hh.ru/industries" 
     response = requests.get(url, headers=headers) 
     areas = response.json()
     write_json(areas, 'industries')
 
 
-def save_vacancies_as_json(vacancie_name: str, regions: list[int], industry_id: list[int] = None) -> None:
-    """
-    save vacancies in .files/areas.json
-    """
+def save_vacancies_as_json(
+        vacancie_name: str, 
+        regions: list[int], 
+        industry_id: list[int] = None
+        ) -> None:
+    '''
+    Fetches vacancies based on the provided criteria and saves them to a JSON file named after the vacancy and the current date.
+
+    Args:
+    - vacancie_name: The job title or keyword to search for.
+    - regions: A list of region IDs where the vacancies are located.
+    - industry_id: An optional list of industry IDs to filter the vacancies.
+
+    return: None
+    '''
     current_date_time = datetime.now().strftime("%Y-%m-%d")
     vacancies = get_vacancies_json(vacancie_name, regions, industry_id)
     file_name = f'{vacancie_name}_{current_date_time}'
     write_json(vacancies, vacancie_name)
 
 
-def get_vacancies_list(vacancy_name: str, regions: list[int] = None, industry_id: list[int] = None) -> list[list[str]]:
-    """
-    return list, wich contains: 
-    request, 
-    current_date_time, 
-    vacancy_title, 
+def get_vacancies_list(
+        vacancy_name: str, 
+        regions: list[int] = None, 
+        industry_id: list[int] = None
+        ) -> list[list[str]]:
+    '''
+    Fetches vacancies and extracts specific details into a list of lists.
+
+    Args:
+    - vacancy_name: The job title or keyword to search for.
+    - regions: An optional list of region IDs where the vacancies are located.
+    - industry_id: An optional list of industry IDs to filter the vacancies.
+
+    return: A list of lists, where each inner list contains details for one vacancy: [request, 
+    date, 
+    title, 
     area, 
-    company_name, 
-    vacancy_url, 
+    company, 
+    url, 
     salary, 
-    currency,
+    currency, 
     requirement, 
-    responsibility
-    """
+    responsibility].
+    '''
     output_data = []
     current_date_time = datetime.now().strftime("%Y-%m-%d")
     vacancies = get_vacancies_json(vacancy_name, regions, industry_id)
@@ -102,10 +154,19 @@ def get_vacancies_list(vacancy_name: str, regions: list[int] = None, industry_id
             output_data.append([vacancy_name, current_date_time, vacancy_title, area, company_name, vacancy_url, salary, currency, requirement, responsibility])
     return output_data
 
-def get_vacancies_list_from_dict(vacancy_name_dict: dict[str:list[int]], regions: list[int] = None) -> list[list[str]]:
-    """
-    collect all requests from get_vacancies_list() in one list
-    """
+def get_vacancies_list_from_dict(
+        vacancy_name_dict: dict[str:list[int]], 
+        regions: list[int] = None
+        ) -> list[list[str]]:
+    '''
+    Aggregates vacancy data for multiple job titles/keywords provided in a dictionary
+
+    Args:
+    - vacancy_name_dict: A dictionary mapping job titles/keywords to lists of industry IDs.
+    - regions: An optional list of region IDs to apply to all searches.
+
+    return: A combined list of lists containing vacancy details for all specified job titles/keywords.
+    '''
     output_data = []
     for vacancy_name in vacancy_name_dict.keys():
         vacancies_list = get_vacancies_list(vacancy_name, regions, vacancy_name_dict[vacancy_name])
@@ -113,9 +174,16 @@ def get_vacancies_list_from_dict(vacancy_name_dict: dict[str:list[int]], regions
     return output_data
 
 def save_xlsx(data: list[list], name: str, columns:list[dict]) -> None:
-    """
-    save data as xlsx in .files.
-    """
+    '''
+    Saves data to an Excel (.xlsx) file within the '.files' directory.
+
+    Args:
+    - data: The list of lists containing the data to write to the Excel file.
+    - name: The base name for the Excel file (the date will be appended).
+    - columns: A list of dictionaries defining the column headers for the Excel table.
+
+    return: None
+    '''
     folder_path = '.files'
     Path(folder_path).mkdir(parents=True, exist_ok=True)
     dir_path = os.path.dirname(os.path.abspath(__file__))  
@@ -132,9 +200,15 @@ def save_xlsx(data: list[list], name: str, columns:list[dict]) -> None:
     workbook.close()
 
 def get_column_letter(column_number:int) -> str:
-    """
+    '''
+    Converts a column number (1-based) to its corresponding Excel column letter(s).
+
+    Args:
+    - column_number: The integer representing the column index (starting from 1).
+
+    return: The Excel column letter string (e.g., 'A', 'Z', 'AA').
     1 -> 'A', 2 -> 'B', 27 -> 'AA'.
-    """
+    '''
     letter = ""
     while column_number > 0:
         column_number, remainder = divmod(column_number - 1, 26)
