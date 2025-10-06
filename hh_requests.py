@@ -104,7 +104,7 @@ def save_vacancies_as_json(
     current_date_time = datetime.now().strftime("%Y-%m-%d")
     vacancies = get_vacancies_json(vacancie_name, regions, industry_id)
     file_name = f'{vacancie_name}_{current_date_time}'
-    write_json(vacancies, vacancie_name)
+    write_json(vacancies, file_name)
 
 def get_vacancie_df(
         vacancy_name: str, 
