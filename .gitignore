@@ -10,3 +10,4 @@ wheels/
 .venv
 .files
 .DS_Store
+_test.ipynb
